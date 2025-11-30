@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A. ko. – Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header" data-animate>
+    <div class="logo" aria-label="Domov">A. ko.</div>
+    <button class="nav-toggle" aria-controls="siteNav" aria-expanded="false" aria-label="Zobraziť navigáciu">
+      <span></span>
+      <span></span>
+    </button>
+    <nav id="siteNav" class="site-nav">
+      <a href="#domov">Domov</a>
+      <a href="#video">Video</a>
+      <a href="#fotografia">Fotografia</a>
+      <a href="#poezia">Poézia</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="domov" class="hero" data-animate>
+      <div class="hero-text">
+        <p class="eyebrow">Autorský priestor</p>
+        <h1>A. ko.</h1>
+        <p class="bio-text" id="bioText">Načítavam príbeh...</p>
+      </div>
+      <div class="hero-photo">
+        <img src="" alt="Portrét A. ko." id="mainPhoto" loading="lazy">
+      </div>
+    </section>
+
+    <section class="section-links" aria-label="Rýchle odkazy" data-animate>
+      <a href="#video" class="section-card">
+        <span>Video</span>
+        <p>Ponorte sa do pohyblivých obrazov a hlasu autora.</p>
+      </a>
+      <a href="#fotografia" class="section-card">
+        <span>Fotografia</span>
+        <p>Minimalistická galéria intímnych vizuálnych príbehov.</p>
+      </a>
+      <a href="#poezia" class="section-card">
+        <span>Poézia</span>
+        <p>Neha textu, ktorý dýcha spolu s fotografiou.</p>
+      </a>
+    </section>
+
+    <section id="video" class="content-section" data-animate>
+      <div class="section-heading">
+        <p class="eyebrow">Video</p>
+        <h2>Prelínanie pohyblivých obrazov</h2>
+        <p>Výber krátkych videí, ktoré sledujú krehké medzery medzi svetlom, telom a spomienkami.</p>
+      </div>
+      <div id="videoList" class="card-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="fotografia" class="content-section" data-animate>
+      <div class="section-heading">
+        <p class="eyebrow">Fotografia</p>
+        <h2>Galéria dotykov</h2>
+        <p>Obrazy vytvorené v Martine a Žiline, ktoré vyzdvihujú ľudskú zraniteľnosť.</p>
+      </div>
+      <div id="photoGallery" class="gallery" aria-live="polite"></div>
+    </section>
+
+    <section id="poezia" class="content-section" data-animate>
+      <div class="section-heading">
+        <p class="eyebrow">Poézia</p>
+        <h2>Slová medzi svetlom</h2>
+        <p>Záznamy vnútorných monológov, ktoré dopĺňajú vizuálne cykly.</p>
+      </div>
+      <div class="poem-layout">
+        <div id="poemList" class="poem-list" aria-live="polite"></div>
+        <article class="poem-detail" id="poemDetail" aria-live="polite">
+          <div class="poem-placeholder">
+            <p>Vyberte báseň, ktorú chcete čítať.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-animate>
+    <p>&copy; <span id="year"></span> A. ko. – Autorské práva vyhradené.</p>
+  </footer>
+
+  <div class="modal" data-modal="photo" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-content photo-modal" role="dialog" aria-modal="true" aria-label="Prehliadač fotografií">
+      <button class="modal-close" data-close-modal aria-label="Zavrieť galériu">&times;</button>
+      <div class="photo-stage">
+        <button class="photo-nav prev" data-photo-nav="prev" aria-label="Predchádzajúca fotografia">&#8592;</button>
+        <img src="" alt="" id="lightboxImage">
+        <button class="photo-nav next" data-photo-nav="next" aria-label="Nasledujúca fotografia">&#8594;</button>
+      </div>
+      <div class="photo-meta">
+        <h3 id="lightboxTitle"></h3>
+        <p id="lightboxAnnotation"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

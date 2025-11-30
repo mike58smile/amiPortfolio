@@ -1,0 +1,26 @@
+{
+  "bio": "Som fotograf zo Slovenska (pôsobím v Martine a Žiline). Mojím cieľom pre tento rok je vytvoriť viac božských fotografií ľudí v ich ľudskej podobe a prostredníctvom fotografie a stretnutí sa podieľať na magických momentoch so ženami.",
+  "mainPhoto": "assets/artist/vertical.jpg",
+  "videos": [
+    {
+      "url": "https://youtu.be/DfHGpwLy3VE?si=C9hFEHZckL3dn05i",
+      "title": "Prechodné obdobia",
+      "annotation": "Prechodné obdobia, prechodné myšlienky, obdobie leta, ktoré formovali ďalší prechod životnými skúsenosťami. Vitaj medzi úlomkami týmito prítomnými okamihmi."
+    }
+  ],
+  "photos": [
+    {
+      "src": "assets/photos/1.webp",
+      "title": "Láskyplné kakaukovanie",
+      "annotation": "Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie"
+    }
+  ],
+  "poems": [
+    {
+      "file": "assets/poems/prechodne_okamihy.txt",
+      "title": "Prechodné okamihy",
+      "annotation": "Zachytáva krehké prechody medzi ročnými obdobiami, telom a spomienkami pretavenými do svetelných obrazov.",
+      "audio": null
+    }
+  ]
+}
