@@ -449,23 +449,28 @@ function markdownToHtml(markdown = "") {
   const escaped = escapeHtml(markdown.trim());
   if (!escaped) return "";
 
-  let formatted = escaped;
-  formatted = formatted.replace(/!\[(.*?)\]\(([^)]+)\)/g, (_, altText = "", src = "") => {
-    const html = createImageTag(altText, src);
-    return html || altText;
+  const imageGroups = [];
+  let formatted = escaped.replace(/!\[(.*?)\]\(([^)]+)\)/g, (_, altText = "", src = "") => {
+    const sanitized = sanitizeUrl(src);
+    if (!sanitized) return altText;
+    imageGroups.push({ src: sanitized, alt: altText.trim() || "Fotografia" });
+    return `__IMAGE_PLACEHOLDER_${imageGroups.length - 1}__`;
   });
+
   formatted = formatted.replace(/\[(.+?)\]\((https?:[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
   formatted = formatted.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  formatted = formatted.replace(/\*(.+?)\*/g, "<em>$1</em>");
+  formatted = formatted.replace(/\*(.+?)\*\*/g, "<em>$1</em>");
 
-  return formatted
+  const blocks = formatted
     .split(/(?:\r?\n){2,}/)
-    .map((block) => convertBlock(block))
+    .map((block) => convertBlock(block, imageGroups))
     .filter(Boolean)
     .join(" ");
+
+  return blocks;
 }
 
-function convertBlock(block) {
+function convertBlock(block, imageGroups = []) {
   const lines = block.split(/\r?\n/).filter((line) => line.trim().length);
   if (!lines.length) {
     return "";
@@ -481,7 +486,20 @@ function convertBlock(block) {
     return `<ol>${items.map((item) => `<li>${item}</li>`).join("")}</ol>`;
   }
 
-  return `<p>${lines.join(" <br>")}</p>`;
+  const joined = lines.join(" <br>");
+  const imagePlaceholders = joined.match(/__IMAGE_PLACEHOLDER_\d+__/g);
+  if (imagePlaceholders && imagePlaceholders.length > 1) {
+    const indices = imagePlaceholders.map((ph) => parseInt(ph.match(/\d+/)[0], 10));
+    const galleryImages = indices.map((idx) => imageGroups[idx]).filter(Boolean);
+    return renderImageGallery(galleryImages);
+  }
+
+  const withImages = joined.replace(/__IMAGE_PLACEHOLDER_(\d+)__/g, (_, idx) => {
+    const img = imageGroups[parseInt(idx, 10)];
+    return img ? `<img src="${img.src}" alt="${img.alt}" loading="lazy">` : "";
+  });
+
+  return `<p>${withImages}</p>`;
 }
 
 function escapeHtml(str) {
@@ -492,14 +510,7 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
-function createImageTag(altText = "", rawSrc = "") {
-  const src = sanitizeUrl(rawSrc);
-  if (!src) {
-    return "";
-  }
-  const alt = altText.trim() || "Fotografia";
-  return `<img src="${src}" alt="${alt}" loading="lazy">`;
-}
+
 
 function sanitizeUrl(url = "") {
   const trimmed = url.trim();
@@ -510,6 +521,32 @@ function sanitizeUrl(url = "") {
     return "";
   }
   return trimmed;
+}
+
+function renderImageGallery(images = []) {
+  if (!images.length) return "";
+  const galleryId = `gallery-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  const stackHtml = `
+    <div class="annotation-gallery" data-gallery-id="${galleryId}">
+      <div class="gallery-stack">
+        ${images.map((img, i) => `
+          <img src="${img.src}" alt="${img.alt}" loading="lazy" data-index="${i}">
+        `).join("")}
+      </div>
+      <p class="gallery-hint">Kliknite pre zobrazenie galérie (${images.length} fotografií)</p>
+    </div>
+  `;
+  setTimeout(() => attachGalleryListeners(galleryId, images), 0);
+  return stackHtml;
+}
+
+function attachGalleryListeners(galleryId, images) {
+  const container = document.querySelector(`[data-gallery-id="${galleryId}"]`);
+  if (!container) return;
+  container.addEventListener("click", () => {
+    state.photos = images.map((img) => ({ src: img.src, title: img.alt, annotation: "" }));
+    openPhotoModal(0);
+  });
 }
 
 function setupModalControls() {

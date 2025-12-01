@@ -239,6 +239,57 @@ main {
   display: block;
 }
 
+.annotation-gallery {
+  margin: 1rem 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.annotation-gallery:hover {
+  transform: scale(1.02);
+}
+
+.gallery-stack {
+  position: relative;
+  width: 100%;
+  padding-top: 66.67%;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.gallery-stack img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.gallery-stack img:not(:first-child) {
+  opacity: 0;
+}
+
+.annotation-gallery:hover .gallery-stack img:nth-child(2) {
+  opacity: 0.4;
+  transform: translate(4px, 4px);
+}
+
+.annotation-gallery:hover .gallery-stack img:nth-child(3) {
+  opacity: 0.2;
+  transform: translate(8px, 8px);
+}
+
+.gallery-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+
 .card button,
 .card a.button {
   align-self: flex-start;
