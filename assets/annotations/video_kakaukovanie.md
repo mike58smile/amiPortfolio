@@ -14,8 +14,8 @@ Hudba je aj z tohto dôvodu ešte v demo verzii.
 
 **Postprodukcia**: DaVinci Resolve
 
-### Fotografie z natáčania
+**Moodboard** – definovanie požadovanej scenérie pred natáčaním:
 
-![Kakaukovanie frame 1](assets/video_photos/videoklip/1.jpg)
-![Kakaukovanie frame 2](assets/video_photos/videoklip/2.jpg)
-![Kakaukovanie frame 3](assets/video_photos/videoklip/3.jpg)
+![Moodboard](assets/video_photos/videoklip/1.jpg)
+![Moodboard](assets/video_photos/videoklip/2.jpg)
+![Moodboard](assets/video_photos/videoklip/3.jpg)

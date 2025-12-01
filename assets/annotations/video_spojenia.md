@@ -11,7 +11,7 @@ Kde sa nachádza zdravá hranica medzi samostatnosťou a samotou? Je to zdravá 
 
 **Postprodukcia**: DaVinci Resolve
 
-### Fotografie zo Spojenia
+**Zápisky z tvorby**:
 
 ![Spojenia frame 1](assets/video_photos/spojenia/1.png)
 ![Spojenia frame 2](assets/video_photos/spojenia/2.png)

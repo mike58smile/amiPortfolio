@@ -7,6 +7,7 @@ const state = {
   currentPhotoIndex: 0,
   activeModal: null,
   modalReturnFocus: null,
+  galleryPhotos: [],
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -154,6 +155,7 @@ async function renderPhotos(configPhotos, photoFolder) {
   }
 
   state.photos = mergedPhotos;
+  state.galleryPhotos = mergedPhotos;
 
   if (!mergedPhotos.length) {
     gallery.innerHTML = "<p>Galéria bude čoskoro sprístupnená.</p>";
@@ -167,12 +169,15 @@ async function renderPhotos(configPhotos, photoFolder) {
     img.src = photo.src;
     img.alt = photo.title || "Fotografia";
     button.appendChild(img);
-    button.addEventListener("click", () => openPhotoModal(index));
+    button.addEventListener("click", () => openPhotoModal(index, true));
     gallery.appendChild(button);
   });
 }
 
-function openPhotoModal(index) {
+function openPhotoModal(index, fromGallery = false) {
+  if (fromGallery && state.galleryPhotos.length) {
+    state.photos = state.galleryPhotos;
+  }
   state.currentPhotoIndex = index;
   updatePhotoModal();
   openModal("photo");
@@ -533,7 +538,6 @@ function renderImageGallery(images = []) {
           <img src="${img.src}" alt="${img.alt}" loading="lazy" data-index="${i}">
         `).join("")}
       </div>
-      <p class="gallery-hint">Kliknite pre zobrazenie galérie (${images.length} fotografií)</p>
     </div>
   `;
   setTimeout(() => attachGalleryListeners(galleryId, images), 0);
@@ -545,7 +549,7 @@ function attachGalleryListeners(galleryId, images) {
   if (!container) return;
   container.addEventListener("click", () => {
     state.photos = images.map((img) => ({ src: img.src, title: img.alt, annotation: "" }));
-    openPhotoModal(0);
+    openPhotoModal(0, false);
   });
 }
 
