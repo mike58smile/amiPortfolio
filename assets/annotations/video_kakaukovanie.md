@@ -13,3 +13,9 @@ Hudba je aj z tohto dôvodu ešte v demo verzii.
 - statív
 
 **Postprodukcia**: DaVinci Resolve
+
+### Fotografie z natáčania
+
+![Kakaukovanie frame 1](assets/video_photos/videoklip/1.jpg)
+![Kakaukovanie frame 2](assets/video_photos/videoklip/2.jpg)
+![Kakaukovanie frame 3](assets/video_photos/videoklip/3.jpg)

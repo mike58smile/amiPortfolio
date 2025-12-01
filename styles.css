@@ -231,6 +231,14 @@ main {
   margin-bottom: 0.35rem;
 }
 
+.annotation img {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  margin: 0.75rem 0;
+  display: block;
+}
+
 .card button,
 .card a.button {
   align-self: flex-start;

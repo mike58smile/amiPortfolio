@@ -450,6 +450,10 @@ function markdownToHtml(markdown = "") {
   if (!escaped) return "";
 
   let formatted = escaped;
+  formatted = formatted.replace(/!\[(.*?)\]\(([^)]+)\)/g, (_, altText = "", src = "") => {
+    const html = createImageTag(altText, src);
+    return html || altText;
+  });
   formatted = formatted.replace(/\[(.+?)\]\((https?:[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
   formatted = formatted.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   formatted = formatted.replace(/\*(.+?)\*/g, "<em>$1</em>");
@@ -486,6 +490,26 @@ function escapeHtml(str) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function createImageTag(altText = "", rawSrc = "") {
+  const src = sanitizeUrl(rawSrc);
+  if (!src) {
+    return "";
+  }
+  const alt = altText.trim() || "Fotografia";
+  return `<img src="${src}" alt="${alt}" loading="lazy">`;
+}
+
+function sanitizeUrl(url = "") {
+  const trimmed = url.trim();
+  if (!trimmed) {
+    return "";
+  }
+  if (/^(javascript:|data:)/i.test(trimmed)) {
+    return "";
+  }
+  return trimmed;
 }
 
 function setupModalControls() {
