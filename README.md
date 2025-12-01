@@ -21,15 +21,18 @@ Alternatívy: `npx serve`, `npx http-server`, alebo akýkoľvek iný statický h
 2. Dávajte pozor na úvodzovky a čiarky – súbor musí zostať platný JSON.
 3. Polia:
    - `bio`: krátky text na úvodnej strane.
+   - `bioFile`: cesta k `.md`, ak chcete bio editovať v samostatnom súbore (má prednosť pred `bio`).
    - `mainPhoto`: cesta k portrétu (napr. `/assets/artist/vertical.jpg`).
-   - `videos`: zoznam objektov s kľúčmi `url`, `title`, `annotation`.
-   - `photos`: zoznam fotografií s kľúčmi `src`, `title`, `annotation`.
-   - `poems`: zoznam básní s `file` (cesta k `.txt` alebo `.md`), `title`, `annotation`, voliteľne `audio` (cesta k `.mp3` alebo `.wav`).
+   - `videos`: zoznam objektov s kľúčmi `url`, `title`, `annotation` **alebo** `annotationFile` (cesta k `.md`).
+   - `photos`: zoznam fotografií s kľúčmi `src`, `title`, `annotation` **alebo** `annotationFile`.
+   - `poems`: zoznam básní s `file` (cesta k `.txt` alebo `.md`), `title`, `annotation`/`annotationFile`, voliteľne `audio` (cesta k `.mp3` alebo `.wav`).
+   - Ak použijete `annotationFile`, uložte `.md` súbor napr. do `assets/annotations/` a cesta musí začínať `assets/...`.
 4. Uložte súbor. Pri ďalšom načítaní stránky sa nový obsah zobrazí automaticky.
 
 ## Pridanie nových podkladov
 
 - **Fotografie**: vložte súbory do `assets/photos/` (ideálne optimalizované `.jpg`/`.webp`). Do konfigurácie pridajte novú položku `photos` so správnou cestou.
+- **Anotácie v `.md`**: vytvorte súbor v `assets/annotations/` a na položke použite `"annotationFile": "assets/annotations/nazov.md"`. Rovnako môžete pre bio použiť `bioFile`.
 - **Portréty**: väčší obrázok umiestnite do `assets/artist/` a aktualizujte `mainPhoto`.
 - **Básne**: vytvorte textový súbor (`.txt` alebo `.md`) v `assets/poems/`. Do konfigurácie pridajte položku s cestou k súboru. Ak máte audio nahrávku, vložte ju do `assets/audio/` a uveďte cestu v `audio`.
 - **Video odkazy**: stačí uviesť platné YouTube alebo Vimeo URL.

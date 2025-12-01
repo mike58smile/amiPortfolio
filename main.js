@@ -1,4 +1,5 @@
 const CONFIG_URL = "content-config.json";
+const annotationCache = new Map();
 const state = {
   photos: [],
   currentPhotoIndex: 0,
@@ -71,7 +72,15 @@ async function loadConfig() {
 function renderHero(data) {
   const bio = document.getElementById("bioText");
   const photo = document.getElementById("mainPhoto");
-  bio.textContent = data.bio || "";
+  bio.classList.add("annotation");
+  applyAnnotation(
+    bio,
+    {
+      annotation: data.bio,
+      annotationFile: data.bioFile,
+    },
+    "Načítavam príbeh..."
+  );
   if (data.mainPhoto) {
     photo.src = data.mainPhoto;
   }
@@ -93,8 +102,9 @@ function renderVideos(videos) {
     const heading = document.createElement("h3");
     heading.textContent = video.title;
 
-    const annotation = document.createElement("p");
-    annotation.textContent = video.annotation;
+    const annotation = document.createElement("div");
+    annotation.className = "annotation";
+    applyAnnotation(annotation, video);
 
     const embedWrapper = document.createElement("div");
     embedWrapper.className = "video-embed";
@@ -109,7 +119,7 @@ function renderVideos(videos) {
     iframe.allowFullscreen = true;
     embedWrapper.appendChild(iframe);
 
-    card.append(heading, annotation, embedWrapper);
+    card.append(heading, embedWrapper, annotation);
     list.appendChild(card);
   });
 }
@@ -163,11 +173,12 @@ function updatePhotoModal() {
   const img = document.getElementById("lightboxImage");
   const title = document.getElementById("lightboxTitle");
   const annotation = document.getElementById("lightboxAnnotation");
+  annotation.classList.add("annotation");
 
   img.src = photo.src;
   img.alt = photo.title || "Fotografia";
   title.textContent = photo.title || "";
-  annotation.textContent = photo.annotation || "";
+  applyAnnotation(annotation, photo, "Načítavam popis...");
 }
 
 function renderPoems(poems) {
@@ -184,7 +195,15 @@ function renderPoems(poems) {
     button.className = "poem-item";
     button.type = "button";
     button.setAttribute("data-index", index);
-    button.innerHTML = `<strong>${poem.title}</strong><br><span>${poem.annotation}</span>`;
+
+    const title = document.createElement("strong");
+    title.textContent = poem.title;
+
+    const annotation = document.createElement("div");
+    annotation.className = "annotation";
+    applyAnnotation(annotation, poem);
+
+    button.append(title, annotation);
     button.addEventListener("click", () => {
       list.querySelectorAll("button").forEach((btn) => btn.setAttribute("aria-pressed", "false"));
       button.setAttribute("aria-pressed", "true");
@@ -202,11 +221,19 @@ async function loadPoem(poem) {
     if (!response.ok) throw new Error("Poéziu sa nepodarilo načítať.");
     const text = await response.text();
     const article = document.createElement("div");
-    article.innerHTML = `
-      <h3>${poem.title}</h3>
-      <p class="poem-annotation">${poem.annotation || ""}</p>
-      <pre>${text}</pre>
-    `;
+    article.className = "poem-article";
+
+    const heading = document.createElement("h3");
+    heading.textContent = poem.title;
+
+    const annotation = document.createElement("div");
+    annotation.className = "poem-annotation annotation";
+    applyAnnotation(annotation, poem, "Načítavam anotáciu...");
+
+    const poemBody = document.createElement("pre");
+    poemBody.textContent = text;
+
+    article.append(heading, annotation, poemBody);
     if (poem.audio) {
       const player = document.createElement("audio");
       player.controls = true;
@@ -220,6 +247,95 @@ async function loadPoem(poem) {
     console.error(error);
     detail.innerHTML = "<p>Ospravedlňujem sa, báseň sa nepodarilo načítať.</p>";
   }
+}
+
+function applyAnnotation(element, item, loadingText = "Načítavam anotáciu...") {
+  const sourceKey = item.annotationFile || item.annotation || "";
+  element.dataset.annotationSource = sourceKey;
+
+  if (item.annotationFile) {
+    element.textContent = loadingText;
+    fetchAnnotationHtml(item.annotationFile)
+      .then((html) => {
+        if (element.dataset.annotationSource === sourceKey) {
+          element.innerHTML = html;
+        }
+      })
+      .catch(() => {
+        if (element.dataset.annotationSource === sourceKey) {
+          element.textContent = item.annotation || "Anotáciu sa nepodarilo načítať.";
+        }
+      });
+    return;
+  }
+
+  if (item.annotation) {
+    element.innerHTML = markdownToHtml(item.annotation);
+  } else {
+    element.textContent = "";
+  }
+}
+
+function fetchAnnotationHtml(path) {
+  if (!annotationCache.has(path)) {
+    const promise = fetch(path)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Načítanie anotácie z ${path} zlyhalo.`);
+        }
+        return response.text();
+      })
+      .then((markdown) => markdownToHtml(markdown))
+      .catch((error) => {
+        annotationCache.delete(path);
+        throw error;
+      });
+    annotationCache.set(path, promise);
+  }
+  return annotationCache.get(path);
+}
+
+function markdownToHtml(markdown = "") {
+  const escaped = escapeHtml(markdown.trim());
+  if (!escaped) return "";
+
+  let formatted = escaped;
+  formatted = formatted.replace(/\[(.+?)\]\((https?:[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  formatted = formatted.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  formatted = formatted.replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+  return formatted
+    .split(/(?:\r?\n){2,}/)
+    .map((block) => convertBlock(block))
+    .filter(Boolean)
+    .join(" ");
+}
+
+function convertBlock(block) {
+  const lines = block.split(/\r?\n/).filter((line) => line.trim().length);
+  if (!lines.length) {
+    return "";
+  }
+
+  if (lines.every((line) => /^[-*]\s+/.test(line))) {
+    const items = lines.map((line) => line.replace(/^[-*]\s+/, "").trim());
+    return `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+  }
+
+  if (lines.every((line) => /^\d+\.\s+/.test(line))) {
+    const items = lines.map((line) => line.replace(/^\d+\.\s+/, "").trim());
+    return `<ol>${items.map((item) => `<li>${item}</li>`).join("")}</ol>`;
+  }
+
+  return `<p>${lines.join(" <br>")}</p>`;
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function setupModalControls() {

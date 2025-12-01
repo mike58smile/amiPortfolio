@@ -1,28 +1,28 @@
 {
-  "bio": "Som fotograf zo Slovenska (pôsobím v Martine a Žiline). Mojím cieľom pre tento rok je vytvoriť viac božských fotografií ľudí v ich ľudskej podobe a prostredníctvom fotografie a stretnutí sa podieľať na magických momentoch so ženami.",
+  "bioFile": "assets/annotations/bio.md",
   "mainPhoto": "assets/artist/vertical.jpg",
   "videos": [
     {
-      "url": "https://youtu.be/DfHGpwLy3VE?si=C9hFEHZckL3dn05i",
-      "title": "Prechodné obdobia",
-      "annotation": "Prechodné obdobia, prechodné myšlienky, obdobie leta, ktoré formovali ďalší prechod životnými skúsenosťami. Vitaj medzi úlomkami týmito prítomnými okamihmi."
+      "url": "https://youtu.be/MS963PXLoQg?si=hiTmfX_C_bQuItCO",
+      "title": "SPOJENIA V ŽIARE",
+      "annotationFile": "assets/annotations/video_spojenia.md"
     },
     {
       "url": "https://www.youtube.com/watch?v=j6AcCKxGBh8",
-      "title": "Forest Thoughts on navigating fears and getting out of rut",
-      "annotation": "Prechodné obdobia, prechodné myšlienky, obdobie leta, ktoré formovali ďalší prechod životnými skúsenosťami. Vitaj medzi úlomkami týmito prítomnými okamihmi."
+      "title": "Videoklip Kakaukovanie",
+      "annotationFile": "assets/annotations/video_kakaukovanie.md"
     },
     {
-      "url": "https://www.youtube.com/watch?v=j6AcCKxGBh8",
-      "title": "Forest Thoughts on navigating fears and getting out of rut",
-      "annotation": "Prechodné obdobia, prechodné myšlienky, obdobie leta, ktoré formovali ďalší prechod životnými skúsenosťami. Vitaj medzi úlomkami týmito prítomnými okamihmi."
+      "url": "https://youtu.be/DfHGpwLy3VE?si=nMZMWA2R3GIhDOud",
+      "title": "Prechodné okamihy",
+      "annotationFile": "assets/annotations/video_prechodne_okamihy.md"
     }
   ],
   "photos": [
     {
       "src": "assets/photos/1.webp",
       "title": "Láskyplné kakaukovanie",
-      "annotation": "Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie Láskyplné kakaukovanie"
+      "annotationFile": "assets/annotations/photo_kakaukovanie.md"
     }
   ],
   "poems": [
