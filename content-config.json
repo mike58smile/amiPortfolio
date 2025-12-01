@@ -8,7 +8,7 @@
       "annotationFile": "assets/annotations/video_spojenia.md"
     },
     {
-      "url": "https://www.youtube.com/watch?v=j6AcCKxGBh8",
+      "url": "https://youtu.be/-YyLE05gPh8",
       "title": "Videoklip Kakaukovanie",
       "annotationFile": "assets/annotations/video_kakaukovanie.md"
     },
@@ -20,11 +20,12 @@
   ],
   "photos": [
     {
-      "src": "assets/photos/1.webp",
+      "src": "assets/photos/1.jpg",
       "title": "Láskyplné kakaukovanie",
       "annotationFile": "assets/annotations/photo_kakaukovanie.md"
     }
   ],
+  "photoFolder": "assets/photos",
   "poems": [
     {
       "file": "assets/poems/prechodne_okamihy.txt",

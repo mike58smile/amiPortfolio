@@ -1,4 +1,6 @@
 const CONFIG_URL = "content-config.json";
+const DEFAULT_PHOTO_FOLDER = "assets/photos";
+const PHOTO_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"];
 const annotationCache = new Map();
 const state = {
   photos: [],
@@ -60,7 +62,7 @@ async function loadConfig() {
     const data = await response.json();
     renderHero(data);
     renderVideos(data.videos || []);
-    renderPhotos(data.photos || []);
+    await renderPhotos(data.photos || [], data.photoFolder || DEFAULT_PHOTO_FOLDER);
     renderPoems(data.poems || []);
   } catch (error) {
     console.error(error);
@@ -139,17 +141,26 @@ function getYoutubeEmbedUrl(url) {
   }
 }
 
-function renderPhotos(photos) {
+async function renderPhotos(configPhotos, photoFolder) {
   const gallery = document.getElementById("photoGallery");
   gallery.innerHTML = "";
-  state.photos = photos;
 
-  if (!photos.length) {
+  let mergedPhotos = configPhotos;
+  try {
+    const discovered = await discoverPhotos(photoFolder);
+    mergedPhotos = mergePhotoEntries(configPhotos, discovered);
+  } catch (error) {
+    console.warn("Fotografie sa podarilo načítať iba z konfigurácie:", error);
+  }
+
+  state.photos = mergedPhotos;
+
+  if (!mergedPhotos.length) {
     gallery.innerHTML = "<p>Galéria bude čoskoro sprístupnená.</p>";
     return;
   }
 
-  photos.forEach((photo, index) => {
+  mergedPhotos.forEach((photo, index) => {
     const button = document.createElement("button");
     button.setAttribute("aria-label", photo.title || "Fotografia");
     const img = document.createElement("img");
@@ -247,6 +258,145 @@ async function loadPoem(poem) {
     console.error(error);
     detail.innerHTML = "<p>Ospravedlňujem sa, báseň sa nepodarilo načítať.</p>";
   }
+}
+
+async function discoverPhotos(photoFolder = DEFAULT_PHOTO_FOLDER) {
+  const folder = (photoFolder || DEFAULT_PHOTO_FOLDER).replace(/\/+$/, "");
+  const manifestPhotos = await tryLoadPhotoManifest(folder);
+  if (manifestPhotos.length) {
+    return manifestPhotos;
+  }
+  return tryScrapePhotoDirectory(folder);
+}
+
+async function tryLoadPhotoManifest(folder) {
+  const candidates = [
+    `${folder}/photos-manifest.json`,
+    `${folder}/manifest.json`,
+  ];
+
+  for (const url of candidates) {
+    const entries = await fetchManifestEntries(url, folder);
+    if (entries.length) {
+      return entries;
+    }
+  }
+  return [];
+}
+
+async function fetchManifestEntries(url, folder) {
+  try {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) {
+      return [];
+    }
+    const payload = await response.json();
+    if (!Array.isArray(payload)) {
+      return [];
+    }
+    return payload
+      .map((entry) => normalizePhotoEntry(entry, folder))
+      .filter(Boolean);
+  } catch (error) {
+    return [];
+  }
+}
+
+async function tryScrapePhotoDirectory(folder) {
+  try {
+    const response = await fetch(`${folder}/`, { cache: "no-store" });
+    if (!response.ok) {
+      return [];
+    }
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("text")) {
+      return [];
+    }
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const links = Array.from(doc.querySelectorAll("a"));
+    return links
+      .map((link) => link.getAttribute("href") || "")
+      .filter((href) => PHOTO_EXTENSIONS.some((ext) => href.toLowerCase().endsWith(ext)))
+      .map((href) => normalizePhotoEntry(href, folder))
+      .filter(Boolean);
+  } catch (error) {
+    console.warn("Automatické načítanie fotografií z priečinka zlyhalo", error);
+    return [];
+  }
+}
+
+function normalizePhotoEntry(entry, folder) {
+  if (!entry) {
+    return null;
+  }
+
+  if (typeof entry === "string") {
+    const src = resolvePhotoPath(folder, entry);
+    return src ? { src } : null;
+  }
+
+  if (typeof entry === "object") {
+    const source = entry.src || entry.path || entry.file;
+    const src = resolvePhotoPath(folder, source);
+    if (!src) {
+      return null;
+    }
+    return {
+      src,
+      title: entry.title,
+      annotation: entry.annotation,
+      annotationFile: entry.annotationFile,
+    };
+  }
+  return null;
+}
+
+function resolvePhotoPath(folder, value = "") {
+  if (!value) {
+    return "";
+  }
+  if (/^https?:/i.test(value)) {
+    return value;
+  }
+  let path = value
+    .replace(/^\.\//, "")
+    .replace(/^\/+/, "");
+  if (path.startsWith(folder)) {
+    return path;
+  }
+    return `${folder}/${path}`.replace(/\/{2,}/g, "/");
+}
+
+function mergePhotoEntries(configPhotos, discoveredPhotos) {
+  const catalogue = new Map();
+  (configPhotos || []).forEach((photo) => {
+    const key = normalizePhotoSrc(photo.src);
+    if (!key) {
+      return;
+    }
+    catalogue.set(key, { ...photo, src: photo.src });
+  });
+
+  (discoveredPhotos || []).forEach((photo) => {
+    const key = normalizePhotoSrc(photo.src);
+    if (!key || catalogue.has(key)) {
+      return;
+    }
+    catalogue.set(key, {
+      src: photo.src,
+      title: photo.title,
+      annotation: photo.annotation,
+      annotationFile: photo.annotationFile,
+    });
+  });
+
+  return Array.from(catalogue.values());
+}
+
+function normalizePhotoSrc(src = "") {
+  return src.replace(/^\.\//, "").replace(/^\/+/, "");
 }
 
 function applyAnnotation(element, item, loadingText = "Načítavam anotáciu...") {
