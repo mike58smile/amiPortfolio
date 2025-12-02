@@ -464,9 +464,10 @@ function normalizePhotoEntry(entry, folder) {
   if (typeof entry === "string") {
     const src = resolvePhotoPath(folder, entry);
     if (!src) return null;
+    const variants = createPhotoVariants(src, folder);
     return {
-      src: src.replace('/thumbnails/', '/big/'),
-      thumbnail: src.includes('/thumbnails/') ? src : src.replace(folder, `${folder}/thumbnails`)
+      src: variants.full,
+      thumbnail: variants.thumb,
     };
   }
 
@@ -476,15 +477,42 @@ function normalizePhotoEntry(entry, folder) {
     if (!src) {
       return null;
     }
+    const variants = createPhotoVariants(src, folder);
     return {
-      src: src.replace('/thumbnails/', '/big/'),
-      thumbnail: src.includes('/thumbnails/') ? src : src.replace(folder, `${folder}/thumbnails`),
+      src: variants.full,
+      thumbnail: variants.thumb,
       title: entry.title,
       annotation: entry.annotation,
       annotationFile: entry.annotationFile,
     };
   }
   return null;
+}
+
+function createPhotoVariants(resolvedPath, folder) {
+  const normalizedFolder = folder.replace(/\/+/g, "/").replace(/\/$/, "");
+  const filename = resolvedPath.split("/").pop();
+  const bigPath = `${normalizedFolder}/big/${filename}`;
+  const thumbPath = `${normalizedFolder}/thumbnails/${filename}`;
+
+  if (resolvedPath.includes("/big/")) {
+    return {
+      full: resolvedPath,
+      thumb: resolvedPath.replace("/big/", "/thumbnails/"),
+    };
+  }
+
+  if (resolvedPath.includes("/thumbnails/")) {
+    return {
+      full: resolvedPath.replace("/thumbnails/", "/big/"),
+      thumb: resolvedPath,
+    };
+  }
+
+  return {
+    full: bigPath,
+    thumb: thumbPath,
+  };
 }
 
 function resolvePhotoPath(folder, value = "") {
