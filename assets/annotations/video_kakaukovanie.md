@@ -1,6 +1,15 @@
 Liečiteľská skladba prehlbujúca vzťah k prírode - ceremoniálnemu kakau.
 
-**Cieľ**: Cieľom videoklipu bolo vytvoriť vizuálnu atmosféru, ktorá podporuje emóciu piesne prostredníctvom práce s jednoduchým vizuálnym príbehom, ktorý dopĺňa text piesne a zvýrazňuje jej emotívne vrstvy.
+**Cieľ**: Vytvorenie vizuálnej atmosféry, ktorá podporuje emóciu piesne prostredníctvom práce s jednoduchým vizuálnym príbehom, ktorý dopĺňa text piesne a zvýrazňuje jej emotívne vrstvy.
+
+Estetika klipu je postavená na teplých jesenných farbách, v ktorých sa prelína hmla so slnkom – dva protiklady symbolizujúce prebudenie aj vnútorný pokoj. Podstatou diela je liečivá sila zeme a samotného ceremoniálneho kakaa, o ktorom skladba rozpráva.
+
+V úvodnej scéne postava nachádza kakao skryté pod vrstvou lístia, v lone prírody. Jeho následné pozdvihnutie nad hlavu vyjadruje úctu, silu a duchovný význam, ktorý medicína nesie.
+
+Hudobnú rovinu dotvára hra na handpan a spev dvoch interpretov – Soňa Isitvas Führichová a Matej Marec. Ich hlasy sa vizuálne aj symbolicky prepájajú prostredníctvom kakaa, ktoré funguje ako most medzi energiami oboch spevákov.
+
+Motív ohňa, využitý v ďalších scénach, zdôrazňuje silu premeny, teplo a očistu. Oheň, kakao a zem tu vytvárajú spoločný rituálny priestor, ktorý skladba oslavuje.
+
 
 **Moja rola**: Scénar, Kamera, Strih, Colour Grading
 
