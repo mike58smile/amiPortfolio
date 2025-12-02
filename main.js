@@ -64,7 +64,8 @@ async function loadConfig() {
     renderHero(data);
     renderVideos(data.videos || []);
     await renderPhotos(data.photos || [], data.photoFolder || DEFAULT_PHOTO_FOLDER);
-    renderPoems(data.poems || []);
+    const discoveredPoems = await discoverPoems(data.poems || []);
+    renderPoems(discoveredPoems);
   } catch (error) {
     console.error(error);
     const bio = document.getElementById("bioText");
@@ -279,6 +280,49 @@ function renderPoems(poems) {
   });
 }
 
+async function discoverPoems(configPoems = []) {
+  const poemFolder = "assets/poems";
+  const allPoems = [];
+
+  try {
+    const folderFiles = [
+      "ak ti to je jedno asi nebudeš plakať....md",
+      "chcem byť otravná.. ako môžem cítiť....md",
+      "falling asleep to drums and whistle,....md",
+      "in sence of wholeness, you're the....md",
+      "keby to je sen je to kreatívne....md",
+      "nikdy som sa nebála a tak stojím tu....md",
+      "presne to čo vidím som vždy cítila,....md",
+      "pretože živá voda tečie večne,....md",
+      "v momente milostivej chvíle,....md"
+    ];
+
+    for (const filename of folderFiles) {
+      if (!filename.endsWith(".md")) continue;
+      const filePath = `${poemFolder}/${filename}`;
+      const existing = configPoems.find(p => p.file === filePath);
+      
+      if (existing) {
+        allPoems.push(existing);
+      } else {
+        const title = filename.replace(/\.md$/i, "").trim();
+        allPoems.push({
+          file: filePath,
+          title: title,
+          annotation: "",
+          audio: null,
+          hideTitle: true
+        });
+      }
+    }
+  } catch (error) {
+    console.warn("Could not discover poems:", error);
+    return configPoems;
+  }
+
+  return allPoems;
+}
+
 async function loadPoem(poem) {
   const detail = document.getElementById("poemDetail");
   detail.innerHTML = "<p>Načítavam báseň...</p>";
@@ -289,8 +333,11 @@ async function loadPoem(poem) {
     const article = document.createElement("div");
     article.className = "poem-article";
 
-    const heading = document.createElement("h3");
-    heading.textContent = poem.title;
+    if (!poem.hideTitle && poem.title) {
+      const heading = document.createElement("h3");
+      heading.textContent = poem.title;
+      article.appendChild(heading);
+    }
 
     const annotation = document.createElement("div");
     annotation.className = "poem-annotation annotation";
@@ -299,7 +346,7 @@ async function loadPoem(poem) {
     const poemBody = document.createElement("pre");
     poemBody.textContent = text;
 
-    article.append(heading, annotation, poemBody);
+    article.append(annotation, poemBody);
     if (poem.audio) {
       const player = document.createElement("audio");
       player.controls = true;

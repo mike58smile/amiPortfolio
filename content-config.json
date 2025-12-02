@@ -22,11 +22,5 @@
   ],
   "photoFolder": "assets/photos",
   "poems": [
-    {
-      "file": "assets/poems/prechodne_okamihy.txt",
-      "title": "Prechodné okamihy",
-      "annotation": "Zachytáva krehké prechody medzi ročnými obdobiami, telom a spomienkami pretavenými do svetelných obrazov.",
-      "audio": null
-    }
   ]
 }
