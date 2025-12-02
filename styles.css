@@ -645,9 +645,22 @@ main {
     grid-template-areas:
       "title"
       "media"
-      "details";
+      "details"
+      "gallery";
     padding: 1.25rem;
     gap: 1.25rem;
+  }
+
+  .video-media {
+    display: contents;
+  }
+
+  .video-embed {
+    grid-area: media;
+  }
+
+  .video-gallery {
+    grid-area: gallery;
   }
 
   .gallery img {
