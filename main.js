@@ -364,11 +364,15 @@ async function loadPoem(poem) {
 
 async function discoverPhotos(photoFolder = DEFAULT_PHOTO_FOLDER) {
   const folder = (photoFolder || DEFAULT_PHOTO_FOLDER).replace(/\/+$/, "");
-  const manifestPhotos = await tryLoadPhotoManifest(folder);
-  if (manifestPhotos.length) {
-    return manifestPhotos;
+  
+  // Try directory listing first
+  const scrapedPhotos = await tryScrapePhotoDirectory(folder);
+  if (scrapedPhotos.length) {
+    return scrapedPhotos;
   }
-  return tryScrapePhotoDirectory(folder);
+  
+  // Fallback to manifest if directory listing fails
+  return tryLoadPhotoManifest(folder);
 }
 
 async function tryLoadPhotoManifest(folder) {
