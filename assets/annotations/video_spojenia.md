@@ -14,7 +14,7 @@ Kde sa nachádza zdravá hranica medzi samostatnosťou a samotou? Je to zdravá 
 **Zápisky z tvorby**:
 
 ![Myšlienková mapa](assets/video_photos/spojenia/1.png)
-![Zachytenie emócií](assets/video_photos/spojenia/2.png)
+![Myšlienková mapa](assets/video_photos/spojenia/2.png)
 ![Scenár + storyboard](assets/video_photos/spojenia/3.png)
 ![Scenár + storyboard](assets/video_photos/spojenia/4.png)
 ![Scenár](assets/video_photos/spojenia/5.png)
