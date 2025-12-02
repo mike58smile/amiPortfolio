@@ -186,6 +186,7 @@ function openPhotoModal(index, fromGallery = false) {
 function updatePhotoModal() {
   const photo = state.photos[state.currentPhotoIndex];
   if (!photo) return;
+  const modal = document.querySelector(".photo-modal");
   const img = document.getElementById("lightboxImage");
   const title = document.getElementById("lightboxTitle");
   const annotation = document.getElementById("lightboxAnnotation");
@@ -195,6 +196,10 @@ function updatePhotoModal() {
   img.alt = photo.title || "Fotografia";
   title.textContent = photo.title || "";
   applyAnnotation(annotation, photo, "Načítavam popis...");
+
+  // Toggle no-meta class based on whether there's a title
+  const hasMeta = photo.title || photo.annotation || photo.annotationFile;
+  modal.classList.toggle("no-meta", !hasMeta);
 }
 
 function renderPoems(poems) {

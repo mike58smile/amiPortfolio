@@ -19,11 +19,6 @@
     }
   ],
   "photos": [
-    {
-      "src": "assets/photos/1.jpg",
-      "title": "Láskyplné kakaukovanie",
-      "annotationFile": "assets/annotations/photo_kakaukovanie.md"
-    }
   ],
   "photoFolder": "assets/photos",
   "poems": [
