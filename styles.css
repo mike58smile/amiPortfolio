@@ -195,6 +195,9 @@ main {
 .video-composition {
   display: grid;
   grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
+  grid-template-areas:
+    "title title"
+    "media details";
   gap: clamp(1.5rem, 3vw, 3rem);
   padding: clamp(1.5rem, 3vw, 2.75rem);
   border: 1px solid var(--border);
@@ -204,6 +207,15 @@ main {
   align-items: start;
 }
 
+.video-heading {
+  grid-area: title;
+}
+
+.video-heading h3 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+}
+
 .video-media,
 .video-details {
   display: flex;
@@ -211,9 +223,12 @@ main {
   gap: 1.25rem;
 }
 
-.video-details h3 {
-  margin: 0;
-  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+.video-media {
+  grid-area: media;
+}
+
+.video-details {
+  grid-area: details;
 }
 
 .video-details .annotation {
@@ -627,17 +642,16 @@ main {
 
   .video-composition {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "media"
+      "details";
     padding: 1.25rem;
     gap: 1.25rem;
   }
 
   .gallery img {
     height: 240px;
-  }
-
-  .video-embed iframe {
-    aspect-ratio: auto;
-    height: 250px;
   }
 
   .photo-stage {

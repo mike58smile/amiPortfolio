@@ -102,14 +102,17 @@ function renderVideos(videos) {
     const composition = document.createElement("article");
     composition.className = "video-composition";
 
+    const titleWrapper = document.createElement("div");
+    titleWrapper.className = "video-heading";
+    const heading = document.createElement("h3");
+    heading.textContent = video.title;
+    titleWrapper.appendChild(heading);
+
     const media = document.createElement("div");
     media.className = "video-media";
 
     const details = document.createElement("div");
     details.className = "video-details";
-
-    const heading = document.createElement("h3");
-    heading.textContent = video.title;
 
     const annotation = document.createElement("div");
     annotation.className = "annotation";
@@ -131,8 +134,8 @@ function renderVideos(videos) {
     media.appendChild(embedWrapper);
     prepareVideoMediaContent(annotation, media);
 
-    details.append(heading, annotation);
-    composition.append(media, details);
+    details.appendChild(annotation);
+    composition.append(titleWrapper, media, details);
     list.appendChild(composition);
   });
 }
