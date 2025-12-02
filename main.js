@@ -699,6 +699,40 @@ function setupModalControls() {
     });
   });
 
+  // Touch swipe support for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const photoStage = document.querySelector(".photo-stage");
+  
+  if (photoStage) {
+    photoStage.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    photoStage.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+  }
+
+  function handleSwipe() {
+    if (!state.activeModal || state.activeModal !== "photo") return;
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        // Swipe left - next photo
+        state.currentPhotoIndex = (state.currentPhotoIndex + 1) % state.photos.length;
+        updatePhotoModal();
+      } else {
+        // Swipe right - previous photo
+        state.currentPhotoIndex = (state.currentPhotoIndex - 1 + state.photos.length) % state.photos.length;
+        updatePhotoModal();
+      }
+    }
+  }
+
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && state.activeModal) {
       closeModal();
@@ -721,6 +755,7 @@ function openModal(name) {
   if (!modal) return;
   state.activeModal = name;
   state.modalReturnFocus = document.activeElement;
+  document.body.classList.add("modal-open");
   modal.setAttribute("aria-hidden", "false");
   const focusable = modal.querySelector("button, [href], input, textarea, select, [tabindex]:not([tabindex='-1'])");
   if (focusable) {
@@ -733,6 +768,7 @@ function closeModal() {
   const modal = document.querySelector(`.modal[data-modal="${state.activeModal}"]`);
   modal.setAttribute("aria-hidden", "true");
   state.activeModal = null;
+  document.body.classList.remove("modal-open");
   if (state.modalReturnFocus) {
     state.modalReturnFocus.focus();
     state.modalReturnFocus = null;
