@@ -730,15 +730,35 @@ function setupModalControls() {
   // Touch swipe support for mobile
   let touchStartX = 0;
   let touchEndX = 0;
+  let touchStartY = 0;
+  let touchEndY = 0;
+  let isPinching = false;
   const photoStage = document.querySelector(".photo-stage");
   
   if (photoStage) {
     photoStage.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
+      if (e.touches.length > 1) {
+        isPinching = true;
+      } else {
+        isPinching = false;
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }
+    }, { passive: true });
+
+    photoStage.addEventListener("touchmove", (e) => {
+      if (e.touches.length > 1) {
+        isPinching = true;
+      }
     }, { passive: true });
 
     photoStage.addEventListener("touchend", (e) => {
+      if (isPinching) {
+        isPinching = false;
+        return;
+      }
       touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
       handleSwipe();
     }, { passive: true });
   }
@@ -746,10 +766,12 @@ function setupModalControls() {
   function handleSwipe() {
     if (!state.activeModal || state.activeModal !== "photo") return;
     const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
+    const diffX = touchStartX - touchEndX;
+    const diffY = touchStartY - touchEndY;
     
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
+    // Only swipe if horizontal movement is greater than vertical
+    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
         // Swipe left - next photo
         state.currentPhotoIndex = (state.currentPhotoIndex + 1) % state.photos.length;
         updatePhotoModal();
