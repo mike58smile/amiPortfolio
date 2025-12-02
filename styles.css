@@ -391,6 +391,7 @@ main {
   border-radius: 1.2rem;
   border: 1px solid var(--border);
   transition: transform 0.4s ease;
+  will-change: transform;
 }
 
 .gallery img:hover {

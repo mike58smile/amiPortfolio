@@ -212,8 +212,10 @@ async function renderPhotos(configPhotos, photoFolder) {
     const button = document.createElement("button");
     button.setAttribute("aria-label", photo.title || "Fotografia");
     const img = document.createElement("img");
-    img.src = photo.src;
+    img.src = photo.thumbnail || photo.src;
     img.alt = photo.title || "Fotografia";
+    img.loading = "lazy";
+    img.decoding = "async";
     button.appendChild(img);
     button.addEventListener("click", () => openPhotoModal(index, true));
     gallery.appendChild(button);
@@ -410,6 +412,27 @@ async function fetchManifestEntries(url, folder) {
 
 async function tryScrapePhotoDirectory(folder) {
   try {
+    // Try to load from thumbnails folder first
+    const thumbResponse = await fetch(`${folder}/thumbnails/`, { cache: "no-store" });
+    if (thumbResponse.ok) {
+      const contentType = thumbResponse.headers.get("content-type") || "";
+      if (contentType.includes("text")) {
+        const html = await thumbResponse.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const links = Array.from(doc.querySelectorAll("a"));
+        return links
+          .map((link) => link.getAttribute("href") || "")
+          .filter((href) => PHOTO_EXTENSIONS.some((ext) => href.toLowerCase().endsWith(ext)))
+          .map((href) => ({
+            src: `${folder}/big/${href}`,
+            thumbnail: `${folder}/thumbnails/${href}`
+          }))
+          .filter(Boolean);
+      }
+    }
+
+    // Fallback to main folder
     const response = await fetch(`${folder}/`, { cache: "no-store" });
     if (!response.ok) {
       return [];
@@ -440,7 +463,11 @@ function normalizePhotoEntry(entry, folder) {
 
   if (typeof entry === "string") {
     const src = resolvePhotoPath(folder, entry);
-    return src ? { src } : null;
+    if (!src) return null;
+    return {
+      src: src.replace('/thumbnails/', '/big/'),
+      thumbnail: src.includes('/thumbnails/') ? src : src.replace(folder, `${folder}/thumbnails`)
+    };
   }
 
   if (typeof entry === "object") {
@@ -450,7 +477,8 @@ function normalizePhotoEntry(entry, folder) {
       return null;
     }
     return {
-      src,
+      src: src.replace('/thumbnails/', '/big/'),
+      thumbnail: src.includes('/thumbnails/') ? src : src.replace(folder, `${folder}/thumbnails`),
       title: entry.title,
       annotation: entry.annotation,
       annotationFile: entry.annotationFile,
