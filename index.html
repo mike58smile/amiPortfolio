@@ -101,18 +101,20 @@
       <button class="modal-close" data-close-modal aria-label="Zavrieť galériu">
         <img src="assets/icons/cross.svg" alt="">
       </button>
-      <div class="photo-stage">
-        <button class="photo-nav prev" data-photo-nav="prev" aria-label="Predchádzajúca fotografia">
-          <img src="assets/icons/left.svg" alt="">
-        </button>
-        <img src="" alt="" id="lightboxImage">
-        <button class="photo-nav next" data-photo-nav="next" aria-label="Nasledujúca fotografia">
-          <img src="assets/icons/right.svg" alt="">
-        </button>
-      </div>
-      <div class="photo-meta">
-        <h3 id="lightboxTitle"></h3>
-        <p id="lightboxAnnotation"></p>
+      <div class="photo-stack">
+        <div class="photo-stage">
+          <button class="photo-nav prev" data-photo-nav="prev" aria-label="Predchádzajúca fotografia">
+            <img src="assets/icons/left.svg" alt="">
+          </button>
+          <img src="" alt="" id="lightboxImage">
+          <button class="photo-nav next" data-photo-nav="next" aria-label="Nasledujúca fotografia">
+            <img src="assets/icons/right.svg" alt="">
+          </button>
+        </div>
+        <div class="photo-meta">
+          <h3 id="lightboxTitle"></h3>
+          <p id="lightboxAnnotation"></p>
+        </div>
       </div>
     </div>
   </div>
