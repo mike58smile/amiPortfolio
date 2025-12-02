@@ -99,8 +99,14 @@ function renderVideos(videos) {
   }
 
   videos.forEach((video) => {
-    const card = document.createElement("article");
-    card.className = "card";
+    const composition = document.createElement("article");
+    composition.className = "video-composition";
+
+    const media = document.createElement("div");
+    media.className = "video-media";
+
+    const details = document.createElement("div");
+    details.className = "video-details";
 
     const heading = document.createElement("h3");
     heading.textContent = video.title;
@@ -122,9 +128,45 @@ function renderVideos(videos) {
     iframe.allowFullscreen = true;
     embedWrapper.appendChild(iframe);
 
-    card.append(heading, embedWrapper, annotation);
-    list.appendChild(card);
+    media.appendChild(embedWrapper);
+    prepareVideoMediaContent(annotation, media);
+
+    details.append(heading, annotation);
+    composition.append(media, details);
+    list.appendChild(composition);
   });
+}
+
+function prepareVideoMediaContent(annotationEl, mediaEl) {
+  if (!annotationEl || !mediaEl) return;
+
+  const process = () => {
+    let updated = false;
+
+    const galleries = annotationEl.querySelectorAll(".annotation-gallery");
+    if (galleries.length) {
+      let galleryWrapper = mediaEl.querySelector(".video-gallery");
+      if (!galleryWrapper) {
+        galleryWrapper = document.createElement("div");
+        galleryWrapper.className = "video-gallery";
+        mediaEl.appendChild(galleryWrapper);
+      }
+      galleries.forEach((gallery) => galleryWrapper.appendChild(gallery));
+      updated = true;
+    }
+
+    return updated;
+  };
+
+  if (process()) return;
+
+  const observer = new MutationObserver(() => {
+    if (process()) {
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(annotationEl, { childList: true, subtree: true });
 }
 
 function getYoutubeEmbedUrl(url) {

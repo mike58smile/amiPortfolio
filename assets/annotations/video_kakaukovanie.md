@@ -23,8 +23,6 @@ Hudba je aj z tohto dôvodu ešte v demo verzii.
 
 **Postprodukcia**: DaVinci Resolve
 
-**Moodboard** – definovanie požadovanej scenérie pred natáčaním:
-
-![Moodboard](assets/video_photos/videoklip/1.jpg)
-![Moodboard](assets/video_photos/videoklip/2.jpg)
-![Moodboard](assets/video_photos/videoklip/3.jpg)
+![Moodboard - definovanie požadovanej scenérie pred natáčaním](assets/video_photos/videoklip/1.jpg)
+![Moodboard - definovanie požadovanej scenérie pred natáčaním](assets/video_photos/videoklip/2.jpg)
+![Moodboard - definovanie požadovanej scenérie pred natáčaním](assets/video_photos/videoklip/3.jpg)
