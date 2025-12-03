@@ -570,11 +570,12 @@ main {
   align-items: center;
   justify-content: center;
   padding: 2.2rem 0.5rem 0.75rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .photo-stage img {
-  width: 100vw;
+  width: auto;
+  max-width: 100%;
   max-height: 80vh;
   height: auto;
   border-radius: 0.5rem;
@@ -596,6 +597,7 @@ main {
   align-items: center;
   justify-content: center;
   transition: background 0.2s ease;
+  z-index: 20;
 }
 
 .photo-nav:hover {
