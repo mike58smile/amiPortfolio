@@ -66,6 +66,16 @@ async function loadConfig() {
     await renderPhotos(data.photos || [], data.photoFolder || DEFAULT_PHOTO_FOLDER);
     const discoveredPoems = await discoverPoems(data.poems || []);
     renderPoems(discoveredPoems);
+    
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    }
   } catch (error) {
     console.error(error);
     const bio = document.getElementById("bioText");
@@ -102,6 +112,9 @@ function renderVideos(videos) {
   videos.forEach((video) => {
     const composition = document.createElement("article");
     composition.className = "video-composition";
+    if (video.title) {
+      composition.id = slugify(video.title);
+    }
 
     const titleWrapper = document.createElement("div");
     titleWrapper.className = "video-heading";
@@ -827,4 +840,17 @@ function closeModal() {
     state.modalReturnFocus.focus();
     state.modalReturnFocus = null;
   }
+}
+
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
 }
