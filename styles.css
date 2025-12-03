@@ -193,6 +193,11 @@ main {
   font-size: clamp(2rem, 5vw, 3rem);
 }
 
+.section-heading .eyebrow {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin: 0.5rem 0;
+}
+
 .video-list {
   display: flex;
   flex-direction: column;
