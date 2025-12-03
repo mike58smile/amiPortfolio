@@ -514,12 +514,25 @@ main {
 .photo-modal {
   width: 100vw;
   max-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   overflow-y: auto;
   scrollbar-width: none;
+  pointer-events: none;
+}
+
+.photo-modal .photo-stack,
+.photo-modal .photo-stage img,
+.photo-modal .photo-nav,
+.photo-modal .modal-close {
+  pointer-events: auto;
 }
 
 .photo-modal::-webkit-scrollbar {
@@ -556,13 +569,13 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 1.5rem 1.5rem;
+  padding: 2.2rem 0.5rem 0.75rem;
   overflow: hidden;
 }
 
 .photo-stage img {
   width: 100vw;
-  max-height: 88vh;
+  max-height: 80vh;
   height: auto;
   border-radius: 0.5rem;
   object-fit: contain;
@@ -605,20 +618,21 @@ main {
 
 .photo-meta {
   width: min(92vw, 1100px);
-  padding: 0.25rem 1rem 0;
-  text-align: center;
+  padding: 0.4rem 1rem 0.75rem;
+  text-align: left;
   color: #fff;
 }
 
 .photo-meta h3 {
-  margin: 0.25rem 0;
-  font-size: 1.1rem;
+  margin: 0.15rem 0;
+  font-size: 1rem;
+  text-align: center;
   color: #fff;
 }
 
 .photo-modal .annotation {
-  max-height: 20vh;
-  overflow-y: auto;
+  max-height: none;
+  overflow-y: visible;
 }
 
 [data-animate] {
@@ -695,58 +709,11 @@ main {
     height: 240px;
   }
 
-  .modal-content.photo-modal {
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    max-width: 100vw;
-    width: 100vw;
-    max-height: 100vh;
-    height: 100vh;
-    pointer-events: none;
-  }
-
-  .modal-content.photo-modal .photo-stage img {
-    pointer-events: auto;
-  }
-
-  .modal-content.photo-modal .photo-stack {
-    pointer-events: auto;
-  }
-
   .photo-modal .modal-close {
     display: none;
   }
 
-  .photo-stage {
-    padding: 2.2rem 0.5rem 0.5rem;
-  }
-
-  .photo-stage img {
-    width: 100vw;
-    max-height: 80vh;
-  }
-
   .photo-nav {
     display: none;
-  }
-
-  .photo-meta {
-    padding: 0.4rem 1rem 0.75rem;
-    text-align: left;
-    color: #fff;
-  }
-
-  .photo-meta h3 {
-    margin: 0.15rem 0;
-    font-size: 1rem;
-    text-align: center;
-    color: #fff;
-  }
-
-  .photo-modal .annotation {
-    max-height: none;
   }
 }
