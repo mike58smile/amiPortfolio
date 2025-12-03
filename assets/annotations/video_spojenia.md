@@ -20,9 +20,9 @@ Záverečná časť V žiari je audiovizuálnym vyjadrením sily jednotlivca. Po
 
 **Postprodukcia**: DaVinci Resolve
 
-![Myšlienková mapa](assets/video_photos/spojenia/1.png)
-![Myšlienková mapa](assets/video_photos/spojenia/2.png)
-![Scenár + storyboard](assets/video_photos/spojenia/3.png)
-![Scenár + storyboard](assets/video_photos/spojenia/4.png)
-![Scenár](assets/video_photos/spojenia/5.png)
-![Spojenia](assets/video_photos/spojenia/6.png)
+![Myšlienková mapa](assets/video_photos/spojenia/1.jpg)
+![Myšlienková mapa](assets/video_photos/spojenia/2.jpg)
+![Scenár + storyboard](assets/video_photos/spojenia/3.jpg)
+![Scenár + storyboard](assets/video_photos/spojenia/4.jpg)
+![Scenár](assets/video_photos/spojenia/5.jpg)
+![Spojenia](assets/video_photos/spojenia/6.jpg)
