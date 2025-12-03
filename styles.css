@@ -513,6 +513,7 @@ main {
 
 .photo-modal {
   width: 100vw;
+  max-width: none;
   max-height: 100vh;
   height: 100vh;
   display: flex;
@@ -571,6 +572,7 @@ main {
   justify-content: center;
   padding: 2.2rem 0.5rem 0.75rem;
   overflow: visible;
+  max-width: 100%;
 }
 
 .photo-stage img {
