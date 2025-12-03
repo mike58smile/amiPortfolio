@@ -1,6 +1,6 @@
 Liečiteľská skladba prehlbujúca vzťah k prírode - ceremoniálnemu kakau.
 
-**Cieľ**: Vytvorenie vizuálnej atmosféry, ktorá podporuje emóciu piesne prostredníctvom práce s jednoduchým vizuálnym príbehom, ktorý dopĺňa text piesne a zvýrazňuje jej emotívne vrstvy.
+**Cieľ**: Vytvorenie vizuálnej atmosféry, ktorá podporuje emóciu piesne prostredníctvom práce s jednoduchým **vizuálnym príbehom**, ktorý dopĺňa text piesne a zvýrazňuje jej emotívne vrstvy.
 
 Estetika klipu je postavená na teplých jesenných farbách, v ktorých sa prelína hmla so slnkom – dva protiklady symbolizujúce prebudenie aj vnútorný pokoj. Podstatou diela je liečivá sila zeme a samotného ceremoniálneho kakaa, o ktorom skladba rozpráva.
 
