@@ -277,6 +277,10 @@ function renderPoems(poems) {
       list.querySelectorAll("button").forEach((btn) => btn.setAttribute("aria-pressed", "false"));
       button.setAttribute("aria-pressed", "true");
       loadPoem(poem);
+      if (window.innerWidth <= 900) {
+        const detail = document.getElementById("poemDetail");
+        detail.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     });
     list.appendChild(button);
   });

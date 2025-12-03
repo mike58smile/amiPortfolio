@@ -444,6 +444,7 @@ main {
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.9);
   min-height: 320px;
+  scroll-margin-top: 6rem;
 }
 
 .poem-detail h3 {
