@@ -305,6 +305,7 @@ async function discoverPoems(configPoems = []) {
 
   try {
     const folderFiles = [
+      "aké jednoduché je zabudnúť....md",
       "ak ti to je jedno asi nebudeš plakať....md",
       "chcem byť otravná.. ako môžem cítiť....md",
       "falling asleep to drums and whistle,....md",
